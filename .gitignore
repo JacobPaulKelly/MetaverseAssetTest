@@ -1,5 +1,11 @@
-# Visual Studio 2015 user specific files
+# Visual Studio 2022 user specific files
 .vs/
+*.rsuser
+*.user
+*.userosscache
+*.sln.docstates
+.vscode
+**/.history
 
 # Compiled Object files
 *.slo
@@ -40,6 +46,7 @@
 *.sdf
 *.VC.db
 *.VC.opendb
+*.opendb
 
 # Precompiled Assets
 SourceArt/**/*.png
@@ -51,6 +58,7 @@ Plugins/**/Binaries/*
 
 # Builds
 Build/*
+Builds/*
 
 # Whitelist PakBlacklist-<BuildConfiguration>.txt files
 !Build/*/
