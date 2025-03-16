@@ -20,6 +20,28 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	const float WaterDensity = 997;
+
+	const float GravitationalForce = 9.807;
+
+	const float SeaLevel = 0;
+
+	bool CanObjectFloat;
+	
+	float ObjectsMass;
+
+	float Upthrust;
+
+	float ObjectsVolume;
+
+	UPROPERTY (EditAnywhere)
+	float ObjectsDensity;
+
+
+
+	const float BuoyancyForce(float fluidDensity, float gravitationalForce, float objectMass, float objectVolume, bool objectDoesFloat);
+
+
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
