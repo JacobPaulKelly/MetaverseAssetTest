@@ -30,16 +30,17 @@ protected:
 	
 	float ObjectsMass;
 
-	float Upthrust;
-
 	float ObjectsVolume;
 
-	UPROPERTY (EditAnywhere)
-	float ObjectsDensity;
+	float ObjectsHeight;
 
-
+	float Upthrust;
 
 	const float BuoyancyForce(float fluidDensity, float gravitationalForce, float objectMass, float objectVolume, bool objectDoesFloat);
+
+	//Editable Variables
+	UPROPERTY(EditAnywhere)
+	float ObjectsDensity;
 
 
 public:	

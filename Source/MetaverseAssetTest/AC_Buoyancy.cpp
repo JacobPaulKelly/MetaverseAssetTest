@@ -29,7 +29,10 @@ void UAC_Buoyancy::BeginPlay()
 	//calling function to apply values to origin and extents
 	Parent->GetActorBounds(false, OwningActorOrigin, OwningActorBoxExtent);
 
-	//calculating the voolume
+	//grabbing the height of the object to calc how much of the object is submerged.
+	ObjectsHeight = OwningActorBoxExtent.Z;
+
+	//calculating the volume
 	ObjectsVolume = OwningActorBoxExtent.X * OwningActorBoxExtent.Y * OwningActorBoxExtent.Z;
 	
 	//calculating the mass of our actor for our next check
@@ -56,11 +59,14 @@ void UAC_Buoyancy::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 	Upthrust = BuoyancyForce(WaterDensity, GravitationalForce, ObjectsMass, ObjectsVolume, CanObjectFloat);
 
 	//applying calculated force to object
-	GetOwner()->addvelocity(Upthrust * DeltaTime);
+	//GetOwner()->addvelocity(Upthrust * DeltaTime);
+
+	//Testing purposes, ensure this is diabled once debugging is over.
+	UE_LOG(LogTemp, Warning, TEXT("Buoyancy Value = %f"), Upthrust);
 	
 }
 
-const float BuoyancyForce(float fluidDensity, float gravitationalForce, float objectMass, float objectVolume, bool objectDoesFloat)
+const float UAC_Buoyancy::BuoyancyForce(float fluidDensity, float gravitationalForce, float objectMass, float objectVolume, bool objectDoesFloat)
 {
 	float Buoyancy;
 	float CombinedForces;
@@ -72,6 +78,7 @@ const float BuoyancyForce(float fluidDensity, float gravitationalForce, float ob
 	{
 		DisplacedVolume = objectMass / fluidDensity;
 
+		//clamping to ensure that displaced volume cant exceed the fluid densityas this means all fluid is displaced
 		if (DisplacedVolume > fluidDensity)
 		{
 			DisplacedVolume = fluidDensity;
@@ -81,7 +88,7 @@ const float BuoyancyForce(float fluidDensity, float gravitationalForce, float ob
 
 		return Buoyancy;
 	}
-
+	//if the object doesnt float then set the displaced volume as the entirety of the objects volume
 	DisplacedVolume = objectVolume;
 
 	Buoyancy = CombinedForces * DisplacedVolume;
