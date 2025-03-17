@@ -136,9 +136,9 @@ void UAC_Buoyancy::BuoyancyPointsToAddForce(FVector drag)
 	//four corners (and a centre point to help with stability), also found that puting the Z bounds helped make the floating look better
 	TArray<FVector>BuoyancyDistributionPoints = {
 		FVector(Bounds.X,Bounds.Y,-Bounds.Z / 4),
-		FVector(-Bounds.X,Bounds.Y,-Bounds.Z / 3.1),
+		FVector(-Bounds.X,Bounds.Y,-Bounds.Z /4),
 		FVector(Bounds.X,-Bounds.Y,-Bounds.Z/4),
-		FVector(-Bounds.X,-Bounds.Y,-Bounds.Z/3.1),
+		FVector(-Bounds.X,-Bounds.Y,-Bounds.Z/4),
 		FVector(0,0,-Bounds.Z/2)
 	};
 
@@ -153,11 +153,23 @@ void UAC_Buoyancy::BuoyancyPointsToAddForce(FVector drag)
 		//Calculating how much of a point is submerged
 		float SubmersionDepth = FMath::Max(0, SeaLevel - WorldPoint.Z);
 		float SubmersionFactor = FMath::Clamp(SubmersionDepth / Bounds.Z, 0, 1);
-		
-		//made it feel better when no forces were applied when out of water
+
+		//checking if we are in pie mode as getting different results for physics in game
+		if (GetWorld()->WorldType == EWorldType::PIE)
+		{
 		if (SubmersionDepth > 0)
 		{
 			FVector BuoyancyForce = (Upthrust * SubmersionFactor) / BuoyancyDistributionPoints.Num();
+			MeshRootComp->AddForceAtLocationLocal(BuoyancyForce + drag, Points);
+			
+		}
+		continue;
+		}
+
+		//made it feel better when no forces were applied when out of water
+		if (SubmersionDepth > 0)
+		{
+			FVector BuoyancyForce = (Upthrust * SubmersionFactor);
 			MeshRootComp->AddForceAtLocationLocal(BuoyancyForce + drag, Points);
 
 			//UE_LOG(LogTemp, Warning, TEXT("Buoyancy Force at %s: %s"), *WorldPoint.ToString(), *BuoyancyForce.ToString());
