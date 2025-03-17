@@ -135,10 +135,10 @@ void UAC_Buoyancy::BuoyancyPointsToAddForce(FVector drag)
 
 	//four corners (and a centre point to help with stability), also found that puting the Z bounds helped make the floating look better
 	TArray<FVector>BuoyancyDistributionPoints = {
-		FVector(Bounds.X/2,Bounds.Y/2,-Bounds.Z / 4),
-		FVector(-Bounds.X/2,Bounds.Y/2,-Bounds.Z / 3.1),
-		FVector(Bounds.X/2,-Bounds.Y/2,-Bounds.Z/4),
-		FVector(-Bounds.X/2,-Bounds.Y/2,-Bounds.Z/3.1),
+		FVector(Bounds.X,Bounds.Y,-Bounds.Z / 4),
+		FVector(-Bounds.X,Bounds.Y,-Bounds.Z / 3.1),
+		FVector(Bounds.X,-Bounds.Y,-Bounds.Z/4),
+		FVector(-Bounds.X,-Bounds.Y,-Bounds.Z/3.1),
 		FVector(0,0,-Bounds.Z/2)
 	};
 
