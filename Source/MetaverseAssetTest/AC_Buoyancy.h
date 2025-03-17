@@ -20,6 +20,10 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	AActor* Parent;
+
+	UStaticMeshComponent* MeshRootComp;
+
 	const float WaterDensity = 997;
 
 	const float GravitationalForce = 9.807;
@@ -32,11 +36,17 @@ protected:
 
 	float ObjectsVolume;
 
+	FVector ObjectsLocation;
+
 	float ObjectsHeight;
 
-	float Upthrust;
+	FVector Upthrust;
 
-	const float BuoyancyForce(float fluidDensity, float gravitationalForce, float objectMass, float objectVolume, bool objectDoesFloat);
+	const FVector BuoyancyForce(float fluidDensity, float gravitationalForce, float objectMass, float objectVolume);
+
+	const void ApplyForces();
+
+	void BuoyancyPointsToAddForce(FVector drag);
 
 	//Editable Variables
 	UPROPERTY(EditAnywhere)
